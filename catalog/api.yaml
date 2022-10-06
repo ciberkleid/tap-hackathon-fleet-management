@@ -1,0 +1,13 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: tilt-wehaul-fleet-management-api
+  description: Fleet management API
+spec:
+  type: openapi
+  lifecycle: production
+  owner: team-a
+  system: wehaul-portal
+  definition:
+#    $text: https://tilt-wehaul-fleet-management-app-team-a.tap.h2o-2-1249.h2o.vmware.com/api-docs
+    $text: https://raw.githubusercontent.com/ciberkleid/tap-hackathon-fleet-management/main/catalog/api-docs.json
