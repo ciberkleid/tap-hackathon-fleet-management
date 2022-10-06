@@ -1,9 +1,9 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: wehaul-fleet-management-app
+  name: tilt-wehaul-fleet-management-app
   annotations:
-    "backstage.io/kubernetes-label-selector": "app.kubernetes.io/part-of=wehaul-fleet-management-app"
+    "backstage.io/kubernetes-label-selector": "app.kubernetes.io/part-of=tilt-wehaul-fleet-management-app"
 spec:
   type: service
   lifecycle: experimental

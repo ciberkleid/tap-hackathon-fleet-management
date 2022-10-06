@@ -151,4 +151,10 @@ public class FleetController {
                 .buildAndExpand(id)
                 .toUri();
     }
+
+    @GetMapping("/hello")
+    String hello() {
+        log.info("In hello");
+        return "hello there";
+    }
 }

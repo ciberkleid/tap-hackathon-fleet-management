@@ -11,10 +11,10 @@
     </parent>
 
     <groupId>com.wehaul</groupId>
-    <artifactId>wehaul-fleet-management-app</artifactId>
+    <artifactId>tilt-wehaul-fleet-management-app</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
-    <name>wehaul-fleet-management-app</name>
+    <name>tilt-wehaul-fleet-management-app</name>
     <description>awesomenenessssss</description>
 
     <properties>
