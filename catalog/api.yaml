@@ -10,4 +10,4 @@ spec:
   system: wehaul-portal
   definition:
 #    $text: https://tilt-wehaul-fleet-management-app-team-a.tap.h2o-2-1249.h2o.vmware.com/api-docs
-    $text: https://raw.githubusercontent.com/ciberkleid/tap-hackathon-fleet-management/main/catalog/api-docs.json
+    $text: https://github.com/ciberkleid/tap-hackathon-fleet-management/blob/main/catalog/api-docs.json
