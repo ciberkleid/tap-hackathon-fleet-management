@@ -1,5 +1,7 @@
 spring:
   cloud:
+    function:
+      definition: availabilityReceived;reservationChangeReceived
     stream:
       default-binder: rabbit
       default:
@@ -9,6 +11,8 @@ spring:
           destination: truck-availability-topic
         availability:
           destination: truck-availability-topic
+        reservationChangeReceived-in-0:
+          destination: reservation-topic
   application:
     name: fleet-management-app
   jpa:

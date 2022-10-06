@@ -29,14 +29,17 @@ public class RentalStatusConsumer {
             if (reservationChange.getEventType().equals("RESERVATION_PICKED_UP")) {
 
                 fleetService.claimTruck(reservationChange.getTruckId(), "truck rented");
+                return;
             }
 
             if (reservationChange.getEventType().equals("RESERVATION_FULFILLED")) {
-                fleetService.releaseTruck(reservationChange.getTruckId(), "truck rental returned");
+                fleetService.releaseTruck(reservationChange.getTruckId(), "truck rental returned", reservationChange.getCurrentMiles());
+                return;
             }
 
             if (reservationChange.getEventType().equals("THE ONE TO IGNORE")) {
                 // safely ignoring this
+                return;
             }
 
             log.error("Unexpected event received");

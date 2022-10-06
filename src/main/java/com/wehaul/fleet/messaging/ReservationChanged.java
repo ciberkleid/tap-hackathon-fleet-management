@@ -8,4 +8,5 @@ import lombok.Data;
 public class ReservationChanged {
     private int truckId;
     private String eventType;
+    private int currentMiles;
 }

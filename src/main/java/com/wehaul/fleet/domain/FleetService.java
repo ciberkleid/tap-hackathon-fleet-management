@@ -43,45 +43,26 @@ public class FleetService {
     }
 
     public void sendTruckForInspection(int truckId) {
+        Truck truck = claimTruck(truckId, "sent for inspection");
 
-        // throw if truck not available
-        Optional<Truck> truckOptional = truckRepo.findById(truckId);
-        Truck truck = truckOptional.orElseThrow(() -> new RuntimeException("truck not found"));
-
-        if (!truck.getAvailable()) {
-            throw new RuntimeException("truck is not available: [" + truck.getAvailabilityReason() + "]");
-        }
-
-        // save to database
-        truck.setAvailable(false);
-        truck.setAvailabilityReason("sent for inspection");
+        truck.setLastInspectionMiles(truck.getMiles());
         truckRepo.update(truck);
-        log.info(" >>> truck saved to database: [{}]", truck);
-
-        publishAvailability(truckId, false);
     }
+
+    // todo: what if new miles are less?
 
     public void returnTruckFromInspection(int truckId) {
-        Optional<Truck> truckOptional = truckRepo.findById(truckId);
-        Truck truck = truckOptional.orElseThrow(() -> new RuntimeException("truck not found"));
-
-        if (truck.getAvailable()) {
-            log.info("truck is already available: [{}]", truck);
-            return;
-        }
-
-        truck.setAvailable(true);
-        truck.setAvailabilityReason("returned from inspection");
-
-        truckRepo.update(truck);
-        log.info(" >>> truck saved to database: [{}]", truck);
-
-        publishAvailability(truckId, true);
+        int currentMiles = getTruckMiles(truckId);
+        releaseTruck(truckId, "returned from inspection", currentMiles);
     }
 
-    public void claimTruck(int truckId, String claimDetails) {
+    private int getTruckMiles(int truckId) {
+        return truckRepo.findById(truckId)
+                .map(Truck::getMiles)
+                .orElseThrow(() -> new RuntimeException("truck not found"));
+    }
 
-        // todo: refactor this, duplicate code
+    public Truck claimTruck(int truckId, String claimDetails) {
 
         // throw if truck not available
         Optional<Truck> truckOptional = truckRepo.findById(truckId);
@@ -98,11 +79,11 @@ public class FleetService {
         log.info(" >>> truck saved to database: [{}]", truck);
 
         publishAvailability(truckId, false);
+
+        return truck;
     }
 
-    public void releaseTruck(int truckId, String releaseDetails) {
-
-        // todo: refactor this, duplicate code
+    public void releaseTruck(int truckId, String releaseDetails, int currentMiles) {
 
         Optional<Truck> truckOptional = truckRepo.findById(truckId);
         Truck truck = truckOptional.orElseThrow(() -> new RuntimeException("truck not found"));
@@ -114,11 +95,23 @@ public class FleetService {
 
         truck.setAvailable(true);
         truck.setAvailabilityReason(releaseDetails);
+        truck.setMiles(currentMiles);
 
         truckRepo.update(truck);
         log.info(" >>> truck saved to database: [{}]", truck);
 
         publishAvailability(truckId, true);
+
+        inspectIfNeeded(truck);
+    }
+
+    private void inspectIfNeeded(Truck truck) {
+
+        if (truck.getMiles() - truck.getLastInspectionMiles() < 2_000) {
+            return;
+        }
+
+        sendTruckForInspection(truck.getTruckId());
     }
 
     private void publishAvailability(int truckId, boolean available) {
@@ -131,6 +124,4 @@ public class FleetService {
         domainEventPublisher.publish(availabilityChanged);
         log.info(" >>> truck availability event published [{}]", availabilityChanged);
     }
-
-
 }

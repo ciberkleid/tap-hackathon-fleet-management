@@ -21,6 +21,6 @@ public record NotificationService(StreamBridge streamBridge) implements DomainEv
 
     @Bean
     public Consumer<TruckAvailabilityChanged> availabilityReceived() {
-        return truckAvailabilityChanged -> log.info(" >>> truck availability change: [{}]", truckAvailabilityChanged);
+        return truckAvailabilityChanged -> log.info(" <<< truck availability change received: [{}]", truckAvailabilityChanged);
     }
 }
