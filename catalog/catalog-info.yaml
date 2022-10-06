@@ -8,3 +8,6 @@ spec:
   type: service
   lifecycle: experimental
   owner: team-a
+  system: wehaul-portal
+  providesApis:
+    - tilt-wehaul-fleet-management-api
