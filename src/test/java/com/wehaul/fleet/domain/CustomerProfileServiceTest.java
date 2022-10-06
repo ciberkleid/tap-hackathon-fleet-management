@@ -1,6 +1,7 @@
 package com.wehaul.fleet.domain;
 
 import com.wehaul.fleet.data.CustomerProfileRepository;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,6 +18,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
+@Ignore
 class CustomerProfileServiceTest {
 
     @Mock
